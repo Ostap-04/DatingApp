@@ -17,16 +17,16 @@ public class MembersController : Controller
     }
     
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
+    public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers(CancellationToken token = default)
     {
-        var members = await _context.Users.ToListAsync();
+        var members = await _context.Users.ToListAsync(token);
         return members;
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AppUser>> GetMember(string id)
+    public async Task<ActionResult<AppUser>> GetMember(string id, CancellationToken token = default)
     {
-        var member = await _context.Users.FindAsync(id);
+        var member = await _context.Users.FindAsync([id], token);
         if (member == null)
         {
             return NotFound();
